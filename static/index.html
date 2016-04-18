@@ -1,3 +1,4 @@
+{{define "T"}}
 <!doctype html>
 <html lang="en">
 
@@ -23,13 +24,15 @@
     <!--
     <link rel="canonical" href="http://www.example.com/">
     -->
+    <!-- opensearch pointer -->
+    <link type="application/opensearchdescription+xml" rel="search" title="paleoseek" href="./opensearch.xml" />
     <link href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en" rel="stylesheet">
     <!-- <link href="https://fonts.googleapis.com/icon?family=Material+Icons"   rel="stylesheet"> -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <script src="https://storage.googleapis.com/code.getmdl.io/1.0.5/material.min.js"></script>
     <!-- <link rel="stylesheet" href="material.min.css"> -->
     <link rel="stylesheet" href="https://storage.googleapis.com/code.getmdl.io/1.0.5/material.teal-blue.min.css" />
-    <link rel="stylesheet" href="/Material/ocdstyle.css">
+    <link rel="stylesheet" href="/common/Material/ocdstyle.css">
     <style>
     #view-source {
         position: fixed;
@@ -66,9 +69,17 @@
         flex-direction: column;
     }
     </style>
-    <script type="application/ld+json">
-        {{.Schema}}
-    </script>
+    <script src="/common/bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+    <link rel="import" href="/common/bower_components/paper-input/paper-input.html">
+    <link rel="import" href="/common/bower_components/paper-button/paper-button.html">
+    <!-- <link rel="import" href="./bower_components/paper-material/paper-material.html"> -->
+    <!-- <link rel="import" href="../../paper-styles/demo-pages.html"> -->
+    <!-- <link rel="import" href="../../paper-checkbox/paper-checkbox.html"> -->
+    <!-- <link rel="import" href="../../paper-dropdown-menu/paper-dropdown-menu.html"> -->
+    <!-- <link rel="import" href="../../paper-menu/paper-menu.html"> -->
+    <!-- <link rel="import" href="../../paper-item/paper-item.html"> -->
+    <link rel="import" href="/common/bower_components/iron-form/iron-form.html">
+    <!-- <link rel="import" href="simple-element.html"> -->
 </head>
 
 <body class="mdl-demo mdl-color--grey-100 mdl-color-text--grey-700 mdl-base">
@@ -101,31 +112,71 @@
                 <!-- <section class="section--center mdl-grid mdl-grid--no-spacing "> -->
                 <div class="section--center  mdl-grid">
                     <div class="mdl-cell mdl-cell--12-col">
-                        <div class="mdl-card__title mdl-card--expand">
-                            <!--  <img style="width:350px" src="/common/ParkingPage/background1.jpg" /> -->
-                        </div>
                         <div class="mdl-card__supporting-text">
-                            <div class="typo-styles__demo mdl-typography--title">Organic Search Test</div>
+                            <div class="typo-styles__demo mdl-typography--title">Open Core Data Search</div>
                         </div>
                     </div>
                 </div>
                 <div class="section--center  mdl-grid">
-                    <form action="#">
-                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                            <input class="mdl-textfield__input" type="text" id="sample3">
-                            <label class="mdl-textfield__label" for="sample3">Text...</label>
-                        </div>
+                    <!-- <form is="iron-form" id="formGet" method="get" action="/"> -->
+                    <form is="iron-form"  id="formGet">
+                        <paper-input name="q" label="{{.}}" required></paper-input>
+                        <!-- <paper-button raised onclick="submitHandler(event)">Submit</paper-button> -->
+                        <!-- <paper-button raised onclick="resetHandler(event)">Reset</paper-button> -->
                     </form>
                 </div>
+                <div class="section--center  mdl-grid">
+                    <div style="margin-top:30px;margin-bottom:10px" id="output">Results for {{.}}</div>
+                </div>
+                {{end}} {{define "R"}}
+                <div style="margin-top:20px;margin-left:25px" class="section--center  mdl-grid">
+
+                
+{{range $key, $value := .}}
+                
+                    <div style="margin-top:10px;margin-left:25px" class="mdl-cell mdl-cell--12-col" id="output">
+
+                    ({{$key}}) <a target="_" href="{{$value.Fields.url}}">{{$value.ID}}</a> <br/>
+                    <span style="color:green">{{$value.Fields.url}}</span><br/>
+                    {{$value.Fields.keywords}}<br/> 
+                    {{if $value.Fields.OpenCoreMeasurement}} {{$value.Fields.OpenCoreMeasurement}}<br/> {{end}}
+                    Description: {{$value.Fields.description}} <br/>
+                    <!-- Locations: {{$value.Locations}} <br/> -->
+                    <!-- Fragments: {{$value.Fragments}} <br/> -->
+                     <span >Score: {{$value.Score}} </span>
+
+                    <!-- {{$value}} -->
+                   
+
+                    </div>
+{{end}}                
+
+
+                </div>
+                <script>
+                document.getElementById('formGet').addEventListener('iron-form-submit', display);
+
+                function display(event) {
+                    // var output = document.getElementById('output');
+                    // output.innerHTML = JSON.stringify(event.detail);
+                    // output.innerHTML = event.name .detail;
+
+                    window.open("/?q=" + JSON.stringify(event.detail), "_self", true)
+                }
+
+                function submitHandler(event) {
+                    Polymer.dom(event).localTarget.parentElement.submit();
+                }
+
+                function resetHandler(event) {
+                    Polymer.dom(event).localTarget.parentElement.reset();
+                }
+                </script>
                 <!-- </section> -->
                 <!-- </div> -->
-
-               <!-- ajax call and results herer -->
-
-
-                <div class="mdl-layout-spacer"></div>
+                <!-- <div class="mdl-layout-spacer"></div> -->
                 <!--  Pushes the footer down -->
-                <footer class="mdl-mini-footer">
+              <!--   <footer class="mdl-mini-footer">
                     <div class="mdl-mini-footer--middle-section">
                     </div>
                     <div class="mdl-mini-footer--bottom-section">
@@ -139,9 +190,10 @@
                             <li><a href="#">COL</a></li>
                         </ul>
                     </div>
-                </footer>
+                </footer> -->
             </main>
         </div>
 </body>
 
 </html>
+{{end}}
