@@ -16,13 +16,14 @@ func DoSearch(w http.ResponseWriter, r *http.Request) {
 	log.Printf("r path: %s\n", r.URL.Query())
 	queryterm := r.URL.Query().Get("q")
 
-	ht, err := template.New("some template").ParseFiles("./static/index.html") //open and parse a template text file
+	ht, err := template.New("some template").ParseFiles("./static/index_new.html") //open and parse a template text file
 	if err != nil {
 		log.Printf("template parse failed: %s", err)
 	}
 
-	// REST call to Bleve (POINTLESS...    just open and work with the local index)
-	url := "http://localhost:8080/api/jrso/_search"
+	// REST call to Bleve (POINTLESS...    just open and work with the local index?)
+	// it is more usefull for putting the UI in other places though....
+	url := "http://localhost:9800/api/jrso/_search"
 
 	content := fmt.Sprintf(`{"size":15,"from":0,"query":{"conjuncts":[{"boost":1,"query":"%s"}]},"fields":["*"],"highlight":{"fields":["content"]},"facets":{"Types":{"field":"type","size":5}}}`, queryterm)
 

@@ -40,4 +40,5 @@ ENTRYPOINT go run main.go
 
 # Document that the service listens on this port
 # container needs to talk to database container
-EXPOSE 8082
+EXPOSE 9802
+EXPOSE 9800

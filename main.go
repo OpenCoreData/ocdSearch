@@ -8,9 +8,7 @@ import (
 	"opencoredata.org/ocdSearch/handler"
 )
 
-// +build !appengine
-
-var bindAddr = flag.String("addr", ":8080", "http listen address")
+var bindAddr = flag.String("addr", ":9800", "http listen address")
 
 func main() {
 	// Route for common files
@@ -19,20 +17,20 @@ func main() {
 
 	// Route for main / handle
 	hndlroute := mux.NewRouter()
-	hndlroute.HandleFunc("/", handler.DoSearch)
+	hndlroute.HandleFunc("/search", handler.DoSearch)
 
 	// Server mux
 	serverMuxA := http.NewServeMux()
-	serverMuxA.Handle("/", hndlroute)
+	serverMuxA.Handle("/search", hndlroute)
 	serverMuxA.Handle("/common/", rcommon)
 
 	go func() {
-		http.ListenAndServe("localhost:8082", serverMuxA)
+		http.ListenAndServe("localhost:9802", serverMuxA)
 	}()
-	log.Printf("Listening for HTML  on %v", 8082)
+	log.Printf("Listening for HTTP/HTML calls on %v", 9802)
 
-	// Start the Bleve search API services running
+	// Start the Bleve search API services running on port 8080
 	flag.Parse()
-	log.Printf("Listening on %v", *bindAddr)
+	log.Printf("Listening for HTTP/API calls on %v", *bindAddr)
 	log.Fatal(http.ListenAndServe(*bindAddr, nil))
 }
