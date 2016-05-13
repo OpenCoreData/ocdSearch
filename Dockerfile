@@ -33,10 +33,11 @@ USER gorunner
 # Move to a workign directory for running codices so it can see it's static files
 # future version should take this as a param so static content can be anywhere
 WORKDIR /go/src/opencoredata.org/ocdSearch
+RUN go build .
 
 
 # Run the command by default when the container starts.
-ENTRYPOINT go run main.go
+ENTRYPOINT ocdSearch
 
 # Document that the service listens on this port
 # container needs to talk to database container
