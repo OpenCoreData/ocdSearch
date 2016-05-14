@@ -25,7 +25,7 @@ func main() {
 	serverMuxA.Handle("/ocdsearchcommon/", rcommon)
 
 	go func() {
-		http.ListenAndServe("localhost:9802", serverMuxA)
+		http.ListenAndServe(":9802", serverMuxA)
 	}()
 	log.Printf("Listening for HTTP/HTML calls on %v", 9802)
 
