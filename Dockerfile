@@ -44,5 +44,5 @@ ENTRYPOINT /go/src/opencoredata.org/ocdSearch/ocdSearch
 
 # Document that the service listens on this port
 # container needs to talk to database container
-EXPOSE 9802
-#EXPOSE 9802 9800
+#EXPOSE 9802
+EXPOSE 9802 9800

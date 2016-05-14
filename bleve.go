@@ -25,15 +25,15 @@ func init() {
 	router.StrictSlash(true)
 
 	listIndexesHandler := bleveHttp.NewListIndexesHandler()
-	router.Handle("/api", listIndexesHandler).Methods("GET")
+	router.Handle("/ocdsearchapi", listIndexesHandler).Methods("GET")
 
 	docCountHandler := bleveHttp.NewDocCountHandler("")
 	docCountHandler.IndexNameLookup = indexNameLookup
-	router.Handle("/api/{indexName}/_count", docCountHandler).Methods("GET")
+	router.Handle("/ocdsearchapi/{indexName}/_count", docCountHandler).Methods("GET")
 
 	searchHandler := bleveHttp.NewSearchHandler("")
 	searchHandler.IndexNameLookup = indexNameLookup
-	router.Handle("/api/{indexName}/_search", searchHandler).Methods("POST")
+	router.Handle("/ocdsearchapi/{indexName}/_search", searchHandler).Methods("POST")
 
 	http.Handle("/", &CORSWrapper{router})
 

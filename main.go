@@ -13,7 +13,7 @@ var bindAddr = flag.String("addr", ":9800", "http listen address")
 func main() {
 	// Route for common files
 	rcommon := mux.NewRouter()
-	rcommon.PathPrefix("/common/").Handler(http.StripPrefix("/common/", http.FileServer(http.Dir("./static"))))
+	rcommon.PathPrefix("/ocdsearchcommon/").Handler(http.StripPrefix("/ocdsearchcommon/", http.FileServer(http.Dir("./static"))))
 
 	// Route for main / handle
 	hndlroute := mux.NewRouter()
@@ -22,7 +22,7 @@ func main() {
 	// Server mux
 	serverMuxA := http.NewServeMux()
 	serverMuxA.Handle("/search", hndlroute)
-	serverMuxA.Handle("/common/", rcommon)
+	serverMuxA.Handle("/ocdsearchcommon/", rcommon)
 
 	go func() {
 		http.ListenAndServe("localhost:9802", serverMuxA)
