@@ -26,6 +26,9 @@ chown -R gorunner:gorunner /go/src/opencoredata.org/ocdSearch
 RUN go get github.com/gorilla/mux
 RUN go get github.com/blevesearch/bleve
 RUN go get github.com/parnurzeal/gorequest
+RUN go get github.com/couchbase/moss
+RUN go get github.com/syndtr/goleveldb/leveldb
+RUN go get golang.org/x/text/unicode/norm
 
 # set user
 USER gorunner
