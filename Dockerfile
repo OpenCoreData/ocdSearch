@@ -40,7 +40,7 @@ RUN go build .
 
 
 # Run the command by default when the container starts.
-ENTRYPOINT ocdSearch
+ENTRYPOINT /go/src/opencoredata.org/ocdSearch/ocdSearch
 
 # Document that the service listens on this port
 # container needs to talk to database container
