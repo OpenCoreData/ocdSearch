@@ -24,7 +24,7 @@ func DoSearch(w http.ResponseWriter, r *http.Request) {
 	// REST call to Bleve (POINTLESS...    just open and work with the local index?)
 	// it is more usefull for putting the UI in other places though....
 	//url := "http://localhost:9800/ocdsearchapi/jrso/_search"
-	url := "/ocdsearchapi/jrso/_search"
+	url := "http://127.0.0.1/ocdsearchapi/jrso/_search"
 
 
 	content := fmt.Sprintf(`{"size":15,"from":0,"query":{"conjuncts":[{"boost":1,"query":"%s"}]},"fields":["*"],"highlight":{"fields":["content"]},"facets":{"Types":{"field":"type","size":5}}}`, queryterm)
