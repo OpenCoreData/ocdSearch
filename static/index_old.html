@@ -1,0 +1,211 @@
+{{define "T"}}
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Open Core Data">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Open Core Data</title>
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="icon" sizes="192x192" href="images/android-desktop.png">
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Material Design Lite">
+    <link rel="apple-touch-icon-precomposed" href="images/ios-desktop.png">
+    <!-- Tile icon for Win8 (144x144 + tile color) -->
+    <meta name="msapplication-TileImage" content="images/touch/ms-touch-icon-144x144-precomposed.png">
+    <meta name="msapplication-TileColor" content="#3372DF">
+    <link rel="shortcut icon" href="images/favicon.png" />
+    <!-- SEO: If your mobile URL is different from the desktop URL, add a canonical link to the desktop page https://developers.google.com/webmasters/smartphone-sites/feature-phones -->
+    <!--
+    <link rel="canonical" href="http://www.example.com/">
+    -->
+    <!-- opensearch pointer -->
+    <link type="application/opensearchdescription+xml" rel="search" title="paleoseek" href="./opensearch.xml" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en" rel="stylesheet">
+    <!-- <link href="https://fonts.googleapis.com/icon?family=Material+Icons"   rel="stylesheet"> -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <script src="https://storage.googleapis.com/code.getmdl.io/1.0.5/material.min.js"></script>
+    <!-- <link rel="stylesheet" href="material.min.css"> -->
+    <link rel="stylesheet" href="https://storage.googleapis.com/code.getmdl.io/1.0.5/material.teal-blue.min.css" />
+    <link rel="stylesheet" href="/common/Material/ocdstyle.css">
+    <style>
+        #view-source {
+            position: fixed;
+            display: block;
+            right: 0;
+            bottom: 0;
+            margin-right: 40px;
+            margin-bottom: 40px;
+            z-index: 900;
+        }
+        
+        .demo-list-three {
+            width: 100%;
+        }
+        
+        img {
+            width: 100%;
+            /* or any custom size */
+            height: 100%;
+            object-fit: contain;
+        }
+    </style>
+    <style>
+        .demo-card-square.mdl-card {
+            width: 320px;
+            height: 320px;
+        }
+        
+        .demo-card-square > .mdl-card__title {
+            color: #fff;
+        }
+    </style>
+    <style>
+        .mdl-layout__content {
+            display: -webkit-flex;
+            display: flex;
+            -webkit-flex-direction: column;
+            flex-direction: column;
+        }
+    </style>
+    <script src="/common/bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+    <link rel="import" href="/common/bower_components/paper-input/paper-input.html">
+    <link rel="import" href="/common/bower_components/paper-button/paper-button.html">
+    <!-- <link rel="import" href="./bower_components/paper-material/paper-material.html"> -->
+    <!-- <link rel="import" href="../../paper-styles/demo-pages.html"> -->
+    <!-- <link rel="import" href="../../paper-checkbox/paper-checkbox.html"> -->
+    <!-- <link rel="import" href="../../paper-dropdown-menu/paper-dropdown-menu.html"> -->
+    <!-- <link rel="import" href="../../paper-menu/paper-menu.html"> -->
+    <!-- <link rel="import" href="../../paper-item/paper-item.html"> -->
+    <link rel="import" href="/common/bower_components/iron-form/iron-form.html">
+    <!-- <link rel="import" href="simple-element.html"> -->
+</head>
+
+<body class="mdl-demo mdl-color--grey-100 mdl-color-text--grey-700 mdl-base">
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+            <header class="mdl-layout__header">
+                <div class="mdl-layout__header-row">
+                    <!-- Title -->
+                    <span class="mdl-layout-title">Open Core Data</span>
+                    <!-- Add spacer, to align navigation to the right -->
+                    <div class="mdl-layout-spacer"></div>
+                    <!-- Navigation. We hide it in small screens. -->
+                    <nav class="mdl-navigation mdl-layout--large-screen-only">
+                        <a class="mdl-navigation__link" href="/">Home</a>
+                    </nav>
+                </div>
+            </header>
+            <div class="mdl-layout__drawer">
+                <span class="mdl-layout-title">Open Core Data</span>
+                <nav class="mdl-navigation">
+                    <a class="mdl-navigation__link" href="/">Home</a>
+                    <a class="mdl-navigation__link" href="/collections/matrix">Janus Overview</a>
+                    <a class="mdl-navigation__link" href="/collections/matrix">CSDCO Overview</a>
+                    <a class="mdl-navigation__link" href="/">Janus Forms</a>
+                    <a class="mdl-navigation__link" href="/">Common Search</a>
+                </nav>
+            </div>
+            <main class="mdl-layout__content">
+                <!-- <div class="mdl-layout__tab-panel is-active" id="overview"> -->
+                <!-- <section class="section--center mdl-grid mdl-grid--no-spacing "> -->
+                <div class="section--center  mdl-grid">
+                    <div class="mdl-cell mdl-cell--12-col">
+                        <div class="mdl-card__supporting-text">
+                            <div class="typo-styles__demo mdl-typography--title">Open Core Data Search</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="section--center  mdl-grid">
+                    <!-- <form is="iron-form" id="formGet" method="get" action="/"> -->
+                    <form is="iron-form" id="formGet">
+                        <paper-input name="q" label="{{.}}" required></paper-input>
+                        <!-- <paper-button raised onclick="submitHandler(event)">Submit</paper-button> -->
+                        <!-- <paper-button raised onclick="resetHandler(event)">Reset</paper-button> -->
+                    </form>
+                </div>
+                <div style="margin-bottom:20px" class="section--center  mdl-grid">
+                    <div style="margin-top:30px;margin-bottom:20px" id="output">Results for {{.}}</div>
+                </div>
+                {{end}} {{define "R"}}
+                <!--<div style="margin-top:20px;margin-left:25px" class="section--center  mdl-grid">-->
+                <div  class="section--center  mdl-grid mdl-grid--no-spacing">
+
+
+
+
+                    <ul class="demo-list-three mdl-list">
+                        {{range $key, $value := .}}
+                        <li style="margin-bottom:15px" class="mdl-list__item mdl-list__item--three-line">
+                            <span class="mdl-list__item-primary-content">
+                                <span>  <i class="material-icons mdl-list__item-avatar">file_download</i> 
+                                <a target="_" href="{{$value.Fields.url}}">{{$value.ID}}</a>   <br/> </span>
+                                 <span class="mdl-list__item-text-body">
+                                    A data set in the Open Core Data holdings.  It is from NSF funded scientific 
+                                    drilling coordinated by either the JRSO or CSDCO.  {{$value.Fields.description}} 
+                                    Keywords: {{$value.Fields.keywords}}   {{if $value.Fields.OpenCoreMeasurement}}
+                                     {{$value.Fields.OpenCoreMeasurement}}  {{end}} 
+                                 </span>
+                            </span>
+                            <span class="mdl-list__item-secondary-content">  <br/> Score ({{$key}}): {{$value.Score}} 
+                            
+                             </span>
+                        </li>
+                        {{end}}
+                    </ul>
+                    
+                 
+
+
+
+
+                </div>
+                <script>
+                    document.getElementById('formGet').addEventListener('iron-form-submit', display);
+
+                    function display(event) {
+                        // var output = document.getElementById('output');
+                        // output.innerHTML = JSON.stringify(event.detail);
+                        // output.innerHTML = event.name .detail;
+
+                        window.open("/?q=" + JSON.stringify(event.detail), "_self", true)
+                    }
+
+                    function submitHandler(event) {
+                        Polymer.dom(event).localTarget.parentElement.submit();
+                    }
+
+                    function resetHandler(event) {
+                        Polymer.dom(event).localTarget.parentElement.reset();
+                    }
+                </script>
+                <!-- </section> -->
+                <!-- </div> -->
+                <!-- <div class="mdl-layout-spacer"></div> -->
+                <!--  Pushes the footer down -->
+                <!--   <footer class="mdl-mini-footer">
+                    <div class="mdl-mini-footer--middle-section">
+                    </div>
+                    <div class="mdl-mini-footer--bottom-section">
+                        <div class="mdl-logo">
+                            More Information
+                        </div>
+                        <ul class="mdl-mini-footer--link-list">
+                            <li><a href="https://developers.google.com/web/starter-kit/">IEDA</a></li>
+                            <li><a href="#">JRSO</a></li>
+                            <li><a href="#">CSDCO</a></li>
+                            <li><a href="#">COL</a></li>
+                        </ul>
+                    </div>
+                </footer> -->
+            </main>
+        </div>
+</body>
+
+</html>
+{{end}}
