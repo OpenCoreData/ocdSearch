@@ -29,7 +29,7 @@ func main() {
 	}()
 	log.Printf("Listening for HTTP/HTML calls on %v", 9802)
 
-	// Start the Bleve search API services running on port 8080
+	// Start the Bleve search API services 
 	flag.Parse()
 	log.Printf("Listening for HTTP/API calls on %v", *bindAddr)
 	log.Fatal(http.ListenAndServe(*bindAddr, nil))

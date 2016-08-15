@@ -32,6 +32,9 @@ func DoSearch(w http.ResponseWriter, r *http.Request) {
 	url := "http://localhost:9800/ocdsearchapi/compositIndex/_search"
 	//url := "/ocdsearchapi/jrso/_search"
 
+	log.Println(url)
+	log.Println(content)
+
 	request := gorequest.New()
 	resp, body, errs := request.Post(url).Set("Accept", "text/plain").Send(content).End()
 	if errs != nil {
