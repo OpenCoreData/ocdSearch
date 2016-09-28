@@ -6,6 +6,8 @@ FROM scratch
 # Add in the static elements (could also mount these from local filesystem)
 ADD ocdSearch /
 ADD ./static  /static
+ADD ./indexes  /indexes
+
 
 # We will add in the required index directory via a local mount 
 # The index is large and doesn't need to be part of the image.  

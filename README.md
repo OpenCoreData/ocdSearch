@@ -6,6 +6,9 @@ Start of a search interface based on the bleve template package.
 
 A search of the JSON-LD index for OCD
 
+## Docker notes
+docker build --tag="opencoredata/ocdsearch:0.2" .
+
 ## Examples
 
 ## Future work
