@@ -36,6 +36,9 @@
     <script src="/ocdsearchcommon/bower_components/webcomponentsjs/webcomponents-lite.js"></script>
     <link rel="import" href="/ocdsearchcommon/bower_components/paper-input/paper-input.html">
     <link rel="import" href="/ocdsearchcommon/bower_components/paper-button/paper-button.html">
+    <link rel="import" href="/ocdsearchcommon/bower_components/paper-item/paper-item.html">
+    <link rel="import" href="/ocdsearchcommon/bower_components/paper-listbox/paper-listbox.html">
+    <link rel="import" href="/ocdsearchcommon/bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
 
@@ -137,14 +140,25 @@
 
                 <div class="mdl-cell mdl-card mdl-shadow--12dp portfolio-card">
                     <div class="mdl-card__title">
-                        <h2 class="mdl-card__title-text">Search </h2>
+                        <h2 class="mdl-card__title-text">Search </h2> <span> (alpha: Here be dragons)</span>
                     </div>
-                    <span>(alpha, Here be dragons)</span>
+                    
 
                     <div class="mdl-card__supporting-text">
                         <form is="iron-form" id="formGet">
+
+<!--<paper-dropdown-menu label="Index">
+  <paper-listbox class="dropdown-content" selected="1">
+    <paper-item>abstracts</paper-item>
+    <paper-item>compositIndex</paper-item>
+    <paper-item>csdco</paper-item>
+    <paper-item>jrso</paper-item>
+    <paper-item>csdcoFX.bleve</paper-item>
+  </paper-listbox>
+</paper-dropdown-menu>-->
+
                             <paper-input name="q" label="{{.}}" value="{{.}}" required></paper-input>
-                            <!-- <paper-button raised onclick="submitHandler(event)">Submit</paper-button> -->
+                             <!--<paper-button raised onclick="submitHandler(event)">Submit</paper-button> -->
                             <!-- <paper-button raised onclick="resetHandler(event)">Reset</paper-button> -->
                         </form>
                     </div>

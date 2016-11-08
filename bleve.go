@@ -58,13 +58,40 @@ func init() {
 		i, err := bleve.OpenUsing(indexPath, map[string]interface{}{
 			"read_only": true,
 		})
+
 		if err != nil {
 			log.Printf("error opening index %s: %v", indexPath, err)
 		} else {
-			log.Printf("registered index: %s", dirInfo.Name())
+			log.Printf("registered index: %s at %s", dirInfo.Name(), indexPath)
+			// bleveHttp.RegisterIndexName(dirInfo.Name(), i)
 			bleveHttp.RegisterIndexName(dirInfo.Name(), i)
 		}
 	}
+
+	// Playing with index aliases
+	// Open all indexes in an alias and use this in a named call
+	// index1, err := bleve.Open("indexes/abstracts")
+	// if err != nil {
+	// 	log.Printf("Error with index alias: %v", err)
+	// 	return
+	// }
+	// index2, err := bleve.Open("indexes/compositIndex")
+	// if err != nil {
+	// 	log.Printf("Error with index alias: %v", err)
+	// 	return
+	// }
+	// everything := bleve.NewIndexAlias(index1, index2)
+
+	// add := []string{"indexes/abstracts", "indexes/compositIndex"}
+	// remove := []string{}
+	// err = bleveHttp.UpdateAlias("codex", add, remove)
+	// if err != nil {
+	// 	log.Printf("Error with index alias: %v ", err)
+	// 	return
+	// }
+
+	// bleveHttp.RegisterIndexName("codex", everything) // search codex for all
+
 }
 
 func muxVariableLookup(req *http.Request, name string) string {

@@ -30,6 +30,7 @@ func DoSearch(w http.ResponseWriter, r *http.Request) {
 	// url := "http://localhost:9800/ocdsearchapi/jrso/_search"
 	// url := "http://localhost:9800/ocdsearchapi/abstracts/_search"
 	url := "http://localhost:9800/ocdsearchapi/compositIndex/_search"
+	// url := "http://localhost:9800/ocdsearchapi/codex/_search"
 	//url := "/ocdsearchapi/jrso/_search"
 
 	log.Println(url)
@@ -50,11 +51,11 @@ func DoSearch(w http.ResponseWriter, r *http.Request) {
 	// fmt.Println("response Body:", body)
 	// fmt.Print(hits)
 	fmt.Printf("Total is %d \n", results.Total)
-	for _, v := range results.Hits {
-		fmt.Printf("%v \n\n", v)
-		fmt.Printf("%v \n\n", v.Fields)
-		fmt.Printf("%v \n\n", v.Fields["OCDSOURCE"])
-	}
+	// for _, v := range results.Hits {
+	// 	fmt.Printf("%v \n\n", v)
+	// 	fmt.Printf("%v \n\n", v.Fields)
+	// 	fmt.Printf("%v \n\n", v.Fields["OCDSOURCE"])
+	// }
 
 	// FUNCTION call here to replace the REST call above
 
