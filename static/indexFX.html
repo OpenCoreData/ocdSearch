@@ -177,22 +177,21 @@
                         <h2 class="mdl-card__title-text">FILENAME</h2>{{$value.Fields.url}}
 
                     </div>-->
+
+                    <!-- element are: CSDCOProjName CSDCOProjURI MD5  UUID along with index, id, score -->
                     <div class="mdl-card__supporting-text">
-                        <p> <i class="material-icons mdl-list__item-avatar">file_download</i> {{if $value.Fields.title}}
-                            <a target="_blank" href="https://www.mendeley.com/research-papers/search/?query=&title={{$value.Fields.title}}">{{$value.ID}}</a> </p>
-                        {{end}} {{if $value.Fields.url}} <a target="_blank" href="{{$value.Fields.url}}">{{$value.Fields.url}}</a>" {{end}}
+                        <p> <i class="material-icons mdl-list__item-avatar">file_download</i> 
+                        {{if $value.Fields.CSDCOProjName}}
+                            <a target="_blank" 
+                            href="https://www.mendeley.com/research-papers/search/?query=&title={{$value.Fields.CSDCOProjName}}">{{$value.ID}}</a> </p>
+                        {{end}} 
+                        {{if $value.Fields.CSDCOProjURI}} 
+                        <a target="_blank" href="{{$value.Fields.CSDCOProjURI}}">{{$value.Fields.CSDCOProjURI}}</a>" {{end}}
 
 
 
                         <p>
-                            {{if $value.Fields.OCDSOURCE}} Facility assoc.: {{$value.Fields.OCDSOURCE}} {{end}} </p>
-
-                        <p> {{if $value.Fields.tags}} See project: {{$value.Fields.tags}} {{end}} </p>
-
-                        <p><b>{{$value.Fields.title}}</b></p>
-                        {{if $value.Fields.description}} Description: {{$value.Fields.description}} {{end}} {{if $value.Fields.keywords}} Keywords: {{$value.Fields.keywords}} {{end}} {{if $value.Fields.OpenCoreMeasurement}} {{$value.Fields.OpenCoreMeasurement}} {{end}}
-
-                        </p>
+                            {{if $value.Fields.UUID}} UUID : {{$value.Fields.UUID}} {{end}} </p>
                         <p>
                             Score: {{$value.Score}}
                         </p>

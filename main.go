@@ -2,9 +2,10 @@ package main
 
 import (
 	"flag"
-	"github.com/gorilla/mux"
 	"log"
 	"net/http"
+
+	"github.com/gorilla/mux"
 	"opencoredata.org/ocdSearch/handler"
 )
 
@@ -29,7 +30,7 @@ func main() {
 	}()
 	log.Printf("Listening for HTTP/HTML calls on %v", 9802)
 
-	// Start the Bleve search API services 
+	// Start the Bleve search API services
 	flag.Parse()
 	log.Printf("Listening for HTTP/API calls on %v", *bindAddr)
 	log.Fatal(http.ListenAndServe(*bindAddr, nil))

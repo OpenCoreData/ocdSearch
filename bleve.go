@@ -63,24 +63,30 @@ func init() {
 			log.Printf("error opening index %s: %v", indexPath, err)
 		} else {
 			log.Printf("registered index: %s at %s", dirInfo.Name(), indexPath)
-			// bleveHttp.RegisterIndexName(dirInfo.Name(), i)
 			bleveHttp.RegisterIndexName(dirInfo.Name(), i)
 		}
 	}
 
 	// Playing with index aliases
 	// Open all indexes in an alias and use this in a named call
-	// index1, err := bleve.Open("indexes/abstracts")
-	// if err != nil {
-	// 	log.Printf("Error with index alias: %v", err)
-	// 	return
-	// }
-	// index2, err := bleve.Open("indexes/compositIndex")
-	// if err != nil {
-	// 	log.Printf("Error with index alias: %v", err)
-	// 	return
-	// }
-	// everything := bleve.NewIndexAlias(index1, index2)
+	log.Printf("Start building Codex index \n")
+
+	index1, err := bleve.OpenUsing("indexes/abstracts", map[string]interface{}{
+		"read_only": true,
+	})
+	if err != nil {
+		log.Printf("Error with index alias: %v", err)
+		return
+	}
+	index2, err := bleve.OpenUsing("indexes/compositIndex", map[string]interface{}{
+		"read_only": true,
+	})
+	if err != nil {
+		log.Printf("Error with index alias: %v", err)
+		return
+	}
+	everything := bleve.NewIndexAlias(index1, index2)
+	log.Printf("Codex index built\n")
 
 	// add := []string{"indexes/abstracts", "indexes/compositIndex"}
 	// remove := []string{}
@@ -90,7 +96,8 @@ func init() {
 	// 	return
 	// }
 
-	// bleveHttp.RegisterIndexName("codex", everything) // search codex for all
+	bleveHttp.RegisterIndexName("codex", everything) // search codex for all
+	log.Printf("registered index:  codex\n")
 
 }
 

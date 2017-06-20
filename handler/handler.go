@@ -12,26 +12,49 @@ import (
 	"github.com/parnurzeal/gorequest"
 )
 
-// Redirection handler
+// DoSearch handler
 func DoSearch(w http.ResponseWriter, r *http.Request) {
 	log.Printf("r path: %s\n", r.URL.Query())
 	queryterm := r.URL.Query().Get("q")
 
-	ht, err := template.New("some template").ParseFiles("./static/indexNG.html") //open and parse a template text file
+	index := r.URL.Query().Get("i")
+	defaultindex := "compositIndex"
+	if index == "" {
+		index = defaultindex
+	}
+
+	// make a string for the various templates I would use....
+	// Perhaps not the way....
+	// rather have the template for each.. have one that responds to
+	// the data in it...
+	templateFile := ""
+	if index == "compositIndex" {
+		templateFile = "./static/index.html"
+	}
+	if index == "csdcoFX.bleve" {
+		templateFile = "./static/indexFX.html"
+	}
+	if index == "abstracts" {
+		templateFile = "./static/indexAbs.html"
+	}
+
+	ht, err := template.New("Template").ParseFiles(templateFile) //open and parse a template text file
 	if err != nil {
 		log.Printf("template parse failed: %s", err)
 	}
 
-	content := fmt.Sprintf(`{"size":50,"from":0,"query":{"conjuncts":[{"boost":1,"query":"%s"}]},"fields":["*"],"highlight":{"fields":["content"]},"facets":{"Types":{"field":"type","size":5}}}`, queryterm)
+	content := fmt.Sprintf(`{"size":150,"from":0,"query":{"conjuncts":[{"boost":1,"query":"%s"}]},"fields":["*"],"highlight":{"fields":["content"]},"facets":{"Types":{"field":"type","size":5}}}`, queryterm)
 	// content := `{"size":20,"from":0,"query":{"conjuncts":[{"boost":1,"query":"JanusCoreSummary"}]},"fields":["*"],"highlight":{"fields":["content"]},"facets":{"Types":{"field":"type","size":5}}}`
+
+	url := fmt.Sprintf("http://localhost:9800/ocdsearchapi/%s/_search", index)
 
 	// REST call to Bleve (POINTLESS...    just open and work with the local index?)
 	// it is more usefull for putting the UI in other places though....
 	// url := "http://localhost:9800/ocdsearchapi/jrso/_search"
 	// url := "http://localhost:9800/ocdsearchapi/abstracts/_search"
-	url := "http://localhost:9800/ocdsearchapi/compositIndex/_search"
+	// url := "http://localhost:9800/ocdsearchapi/compositIndex/_search"
 	// url := "http://localhost:9800/ocdsearchapi/codex/_search"
-	//url := "/ocdsearchapi/jrso/_search"
+	// url := "/ocdsearchapi/jrso/_search"
 
 	log.Println(url)
 	log.Println(content)
@@ -57,7 +80,7 @@ func DoSearch(w http.ResponseWriter, r *http.Request) {
 	// 	fmt.Printf("%v \n\n", v.Fields["OCDSOURCE"])
 	// }
 
-	// FUNCTION call here to replace the REST call above
+	// FUNCTION call here to replace the REST call above?
 
 	err = ht.ExecuteTemplate(w, "T", r.URL.Query().Get("q")) //substitute fields in the template 't', with values from 'user' and write it out to 'w' which implements io.Writer
 	if err != nil {
@@ -71,7 +94,7 @@ func DoSearch(w http.ResponseWriter, r *http.Request) {
 
 }
 
-// put this function in a search package
+// QueryStringSearch put this function in a search package
 // ref http://studygolang.com/articles/2537
 func QueryStringSearch(index bleve.Index) {
 	qString := `+description:text summary:"text indexing" summary:believe~2 -description:lucene duration:<30`
