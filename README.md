@@ -7,6 +7,8 @@ Start of a search interface based on the bleve template package.
 A search of the JSON-LD index for OCD
 
 ## Docker notes
+
+CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build main.go
 docker build --tag="opencoredata/ocdsearch:0.2" .
 
 ## Examples
