@@ -1,37 +1,51 @@
 package main
 
 import (
-	"flag"
 	"log"
 	"net/http"
 
 	"github.com/gorilla/mux"
-	"opencoredata.org/ocdSearch/handler"
+	"opencoredata.org/ocdSearch/search"
 )
 
-var bindAddr = flag.String("addr", ":9800", "http listen address")
+type MyServer struct {
+	r *mux.Router
+}
 
 func main() {
-	// Route for common files
-	rcommon := mux.NewRouter()
-	rcommon.PathPrefix("/ocdsearchcommon/").Handler(http.StripPrefix("/ocdsearchcommon/", http.FileServer(http.Dir("./static"))))
+	searchroute := mux.NewRouter()
+	searchroute.HandleFunc("/", search.DoSearch)
+	http.Handle("/", searchroute)
 
-	// Route for main / handle
-	hndlroute := mux.NewRouter()
-	hndlroute.HandleFunc("/search", handler.DoSearch)
+	imageRouter := mux.NewRouter()
+	imageRouter.PathPrefix("/images/").Handler(http.StripPrefix("/images/", http.FileServer(http.Dir("./images"))))
+	http.Handle("/images/", &MyServer{imageRouter})
 
-	// Server mux
-	serverMuxA := http.NewServeMux()
-	serverMuxA.Handle("/search", hndlroute)
-	serverMuxA.Handle("/ocdsearchcommon/", rcommon)
+	cssRouter := mux.NewRouter()
+	cssRouter.PathPrefix("/css/").Handler(http.StripPrefix("/css/", http.FileServer(http.Dir("./css"))))
+	http.Handle("/css/", &MyServer{cssRouter})
 
-	go func() {
-		http.ListenAndServe(":9802", serverMuxA)
-	}()
-	log.Printf("Listening for HTTP/HTML calls on %v", 9802)
+	log.Printf("About to listen on 9900. Go to http://127.0.0.1:9900/")
 
-	// Start the Bleve search API services
-	flag.Parse()
-	log.Printf("Listening for HTTP/API calls on %v", *bindAddr)
-	log.Fatal(http.ListenAndServe(*bindAddr, nil))
+	err := http.ListenAndServe(":9900", nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
+func (s *MyServer) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
+	rw.Header().Set("Access-Control-Allow-Origin", "*")
+	rw.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+	rw.Header().Set("Access-Control-Allow-Headers",
+		"Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
+
+	// Let the Gorilla work
+	s.r.ServeHTTP(rw, req)
+}
+
+func addDefaultHeaders(fn http.HandlerFunc) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		fn(w, r)
+	}
 }

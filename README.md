@@ -13,6 +13,19 @@ docker build --tag="opencoredata/ocdsearch:0.2" .
 
 ## Examples
 
+## Indexing 
+Some notes on indexing.  currently I have five indexes.
+
+* abstracts (CSDCO abstracts)
+* compositIndex (JRSO and CSDCO resources indexed)
+* CSDCO  (resource index for CSDCO)
+* JRSO  (resource index for JRSO)
+* test (a test index for some, well, testing...)
+
+Really the compositIndex is redundant and remove some flexibility in searching.  So I should just make the 
+three indexs of: JRSO, CSDCO and abstracts.  
+
+
 ## Future work
 
 - Get it working :)
