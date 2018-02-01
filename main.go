@@ -8,22 +8,23 @@ import (
 	"opencoredata.org/ocdSearch/search"
 )
 
+// MyServer is the Gorilla mux router struct
 type MyServer struct {
 	r *mux.Router
 }
 
 func main() {
 	searchroute := mux.NewRouter()
-	searchroute.HandleFunc("/", search.DoSearch)
-	http.Handle("/", searchroute)
+	searchroute.HandleFunc("/search", search.DoSearch)
+	http.Handle("/search", searchroute)
 
 	imageRouter := mux.NewRouter()
-	imageRouter.PathPrefix("/images/").Handler(http.StripPrefix("/images/", http.FileServer(http.Dir("./images"))))
-	http.Handle("/images/", &MyServer{imageRouter})
+	imageRouter.PathPrefix("/search/images/").Handler(http.StripPrefix("/search/images/", http.FileServer(http.Dir("./images"))))
+	http.Handle("/search/images/", &MyServer{imageRouter})
 
 	cssRouter := mux.NewRouter()
-	cssRouter.PathPrefix("/css/").Handler(http.StripPrefix("/css/", http.FileServer(http.Dir("./css"))))
-	http.Handle("/css/", &MyServer{cssRouter})
+	cssRouter.PathPrefix("/search/css/").Handler(http.StripPrefix("/search/css/", http.FileServer(http.Dir("./css"))))
+	http.Handle("/search/css/", &MyServer{cssRouter})
 
 	log.Printf("About to listen on 9900. Go to http://127.0.0.1:9900/")
 

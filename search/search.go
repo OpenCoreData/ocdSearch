@@ -62,11 +62,16 @@ func DoSearch(w http.ResponseWriter, r *http.Request) {
 
 	// parse the queryterm to get the colon based qualifiers
 	qstring := parse(queryterm)
-
-	// var queryResults DocumentMatchCollection{}
 	distance := ""
 	queryResults, sr := indexCall(qstring, startAt, distance)
 	ql := len(queryResults)
+
+	// TODO.. what can I do with facets?
+	// fmt.Println("Facets")
+	// fmt.Println(sr.Facets["terms"].Field)
+	// fmt.Println(sr.Facets["terms"].Terms) //  need to loop on this one
+	// fmt.Println(sr.Facets["terms"].Total)
+	// fmt.Println(sr.Facets["terms"].Missing)
 
 	// TODO..  Yet Another Ugly Section (YAUS)  (I've named the pattern..  that is just sad)
 	// check here..  if results are 0 then recursive call with ~1
@@ -200,19 +205,19 @@ func indexCall(qstruct Qstring, startAt uint64, distance string) ([]FreeTextResu
 	// Open all indexes in an alias and use this in a named call
 	log.Printf("Start building Codex index \n")
 
-	index1, err := bleve.OpenUsing("/Users/dfils/Data/OCDDataVolumes/indexes/abstracts.bleve", map[string]interface{}{
+	index1, err := bleve.OpenUsing("indexes/abstracts.bleve", map[string]interface{}{
 		"read_only": true,
 	})
 	if err != nil {
 		log.Printf("Error with index1 alias: %v", err)
 	}
-	index2, err := bleve.OpenUsing("/Users/dfils/Data/OCDDataVolumes/indexes/csdco.bleve", map[string]interface{}{
+	index2, err := bleve.OpenUsing("indexes/csdco.bleve", map[string]interface{}{
 		"read_only": true,
 	})
 	if err != nil {
 		log.Printf("Error with index2 alias: %v", err)
 	}
-	index3, err := bleve.OpenUsing("/Users/dfils/Data/OCDDataVolumes/indexes/janus.bleve", map[string]interface{}{
+	index3, err := bleve.OpenUsing("indexes/janus.bleve", map[string]interface{}{
 		"read_only": true,
 	})
 	if err != nil {
@@ -246,7 +251,12 @@ func indexCall(qstruct Qstring, startAt uint64, distance string) ([]FreeTextResu
 	fmt.Printf("Ready to search with %s and distance: %s \n", qstruct.Query, distance)
 	query := bleve.NewQueryStringQuery(termReWrite(qstruct.Query, distance))
 	search := bleve.NewSearchRequestOptions(query, 20, int(startAt), false) // no explanation
-	search.Highlight = bleve.NewHighlightWithStyle("html")                  // need Stored and IncludeTermVectors in index
+
+	// TODO  Add facet aspect  ref: http://www.blevesearch.com/docs/Result-Faceting/
+	termFacet := bleve.NewFacetRequest("opencore:params.Pname", 5)
+	search.AddFacet("terms", termFacet)
+
+	search.Highlight = bleve.NewHighlightWithStyle("html") // need Stored and IncludeTermVectors in index
 	searchResults, err := index.Search(search)
 	if err != nil {
 		log.Printf("Error search results: %v", err)
@@ -279,6 +289,7 @@ func indexCall(qstruct Qstring, startAt uint64, distance string) ([]FreeTextResu
 		if strings.Contains(item.Index, "abstracts") {
 			iconName = "http"                  // material design icon name used in template  alts:  web_asset or web
 			iconDescription = "CSDCO Abstract" // material design icon name used in template  alts:  web_asset or web
+			// TODO link for abstract here?  place in a function to build a DOI by calling on ID to get it...  (Mongo first..  then RDF?)
 		}
 
 		results = append(results, FreeTextResults{k, item.Index, item.Score, item.ID, frags, iconName, iconDescription})
