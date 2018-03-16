@@ -290,6 +290,7 @@ func indexCall(qstruct Qstring, startAt uint64, distance string) ([]FreeTextResu
 			iconName = "http"                  // material design icon name used in template  alts:  web_asset or web
 			iconDescription = "CSDCO Abstract" // material design icon name used in template  alts:  web_asset or web
 			// TODO link for abstract here?  place in a function to build a DOI by calling on ID to get it...  (Mongo first..  then RDF?)
+			item.ID = fmt.Sprintf("http://opencoredata.org/collections/csdco/abstract/%s", item.ID) // HACK to add prefix to ID
 		}
 
 		results = append(results, FreeTextResults{k, item.Index, item.Score, item.ID, frags, iconName, iconDescription})
